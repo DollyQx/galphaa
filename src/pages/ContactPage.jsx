@@ -32,7 +32,7 @@ export const ContactPage = () => {
         </h1>
 
         <p className="font-handwriting text-2xl text-[#fcd34d]">
-          "Connect with G ALPHA"
+          "Connect with G Alphaa"
         </p>
 
         <p className="text-base text-[#94a3b8] max-w-xl mx-auto font-light leading-relaxed">
@@ -78,7 +78,7 @@ export const ContactPage = () => {
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">Official Portfolio</h4>
-                  <p className="text-[11px] text-[#94a3b8]">G ALPHA Digital Presence</p>
+                  <p className="text-[11px] text-[#94a3b8]">G Alphaa Digital Presence</p>
                 </div>
               </div>
 
@@ -86,7 +86,7 @@ export const ContactPage = () => {
           </div>
 
           <div className="pt-6 border-t border-white/10 text-xs text-[#64748b]">
-            <p>© {new Date().getFullYear()} G ALPHA Management. Confidentiality respected.</p>
+            <p>© {new Date().getFullYear()} G Alphaa Management. Confidentiality respected.</p>
           </div>
         </div>
 
@@ -102,7 +102,7 @@ export const ContactPage = () => {
                 Message Sent
               </h3>
               <p className="text-sm text-[#94a3b8] max-w-md mx-auto leading-relaxed">
-                Thank you for contacting G ALPHA. Your message has been received and logged.
+                Thank you for contacting G Alphaa. Your message has been received and logged.
               </p>
               <button
                 onClick={() => setSubmitted(false)}

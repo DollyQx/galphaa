@@ -100,7 +100,7 @@ export const CollaboratePage = () => {
               Inquiry Sent Successfully
             </h3>
             <p className="text-sm text-[#94a3b8] max-w-md mx-auto leading-relaxed">
-              Thank you for reaching out to G ALPHA. Your inquiry regarding <strong className="text-white">"{formData.inquiryType}"</strong> has been transmitted. We will review your proposal and respond promptly.
+              Thank you for reaching out to G Alphaa. Your inquiry regarding <strong className="text-white">"{formData.inquiryType}"</strong> has been transmitted. We will review your proposal and respond promptly.
             </p>
             <button
               onClick={() => setSubmitted(false)}

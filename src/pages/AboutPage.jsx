@@ -87,7 +87,7 @@ export const AboutPage = ({ setActivePage }) => {
               onClick={() => setActivePage('collaborate')}
               className="btn-primary text-xs py-3 px-6"
             >
-              <span>Work with G ALPHA</span>
+              <span>Work with G Alphaa</span>
             </button>
             <button
               onClick={() => setActivePage('music')}

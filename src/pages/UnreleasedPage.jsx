@@ -135,7 +135,7 @@ export const UnreleasedPage = ({ onOpenInquiry }) => {
                   <p className="text-xs text-[#94a3b8] font-light">
                     Original composition
                   </p>
-                  <p className="text-[11px] text-[#64748b]">G ALPHA</p>
+                  <p className="text-[11px] text-[#64748b]">G Alphaa</p>
                 </div>
 
               </div>

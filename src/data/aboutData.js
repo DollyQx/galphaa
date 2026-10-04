@@ -6,18 +6,18 @@
  */
 
 export const ARTIST_PROFILE = {
-  artistName: "G ALPHA",
+  artistName: "G Alphaa",
   roles: ["Musician", "Lyricist", "Composer", "Poet / Shayar"],
   headline: "Har lafz ek khamoshi hai... Har dhun ek safar.",
   tagline: "Stories in sound. Feelings in words.",
   location: "India",
   profileImage: "/images/about.png",
   
-  shortBio: "G ALPHA is an independent music artist, lyricist, composer, and shayar creating atmospheric compositions and Hindustani poetry.",
+  shortBio: "G Alphaa is an independent music artist, lyricist, composer, and shayar creating atmospheric compositions and Hindustani poetry.",
   
   longBio: [
-    "G ALPHA approaches music and poetry as two interconnected expressions of human emotion. Working across songwriting, acoustic & vocal compositions, and Hindustani poetry, the work balances lyrical intimacy with cinematic sound design.",
-    "Driven by storytelling, G ALPHA crafts original lyrics and melodic frameworks designed to evoke quiet reflection and emotional depth, maintaining artistic independence across released and private unreleased works."
+    "G Alphaa approaches music and poetry as two interconnected expressions of human emotion. Working across songwriting, acoustic & vocal compositions, and Hindustani poetry, the work balances lyrical intimacy with cinematic sound design.",
+    "Driven by storytelling, G Alphaa crafts original lyrics and melodic frameworks designed to evoke quiet reflection and emotional depth, maintaining artistic independence across released and private unreleased works."
   ],
 
   artisticPillars: [

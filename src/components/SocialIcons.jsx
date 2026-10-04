@@ -18,6 +18,48 @@ export const AppleMusicIcon = ({ className = "w-4 h-4" }) => (
   </svg>
 );
 
+export const YouTubeMusicIcon = ({ className = "w-4 h-4" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-label="YouTube Music">
+    <title>YouTube Music</title>
+    <path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19.2c-3.972 0-7.2-3.228-7.2-7.2s3.228-7.2 7.2-7.2 7.2 3.228 7.2 7.2-3.228 7.2-7.2 7.2zm-2.4-10.8v7.2l6-3.6-6-3.6z"/>
+  </svg>
+);
+
+export const JioSaavnIcon = ({ className = "w-4 h-4" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-label="JioSaavn">
+    <title>JioSaavn</title>
+    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6zm-2-9l5 3-5 3V9z"/>
+  </svg>
+);
+
+export const WynkIcon = ({ className = "w-4 h-4" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-label="Wynk Music">
+    <title>Wynk Music</title>
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+  </svg>
+);
+
+export const AnghamiIcon = ({ className = "w-4 h-4" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-label="Anghami">
+    <title>Anghami</title>
+    <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+  </svg>
+);
+
+export const AmazonMusicIcon = ({ className = "w-4 h-4" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-label="Amazon Music">
+    <title>Amazon Music</title>
+    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+  </svg>
+);
+
+export const SoundCloudIcon = ({ className = "w-4 h-4" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-label="SoundCloud">
+    <title>SoundCloud</title>
+    <path d="M1.175 12.225c-.066 0-.12.053-.12.12v4.868c0 .066.054.12.12.12h.43c.066 0 .12-.054.12-.12v-4.868c0-.067-.054-.12-.12-.12h-.43zm1.611-1.684c-.066 0-.12.053-.12.12v6.552c0 .066.054.12.12.12h.43c.066 0 .12-.054.12-.12v-6.552c0-.067-.054-.12-.12-.12h-.43zm1.61-1.077c-.066 0-.12.053-.12.12v7.629c0 .066.054.12.12.12h.43c.066 0 .12-.054.12-.12V9.584c0-.067-.054-.12-.12-.12h-.43zm1.612-.916c-.066 0-.12.053-.12.12v8.545c0 .066.054.12.12.12h.43c.066 0 .12-.054.12-.12V8.668c0-.067-.054-.12-.12-.12h-.43zm1.611-1.018c-.066 0-.12.053-.12.12v9.563c0 .066.054.12.12.12h.43c.066 0 .12-.054.12-.12V7.65c0-.067-.054-.12-.12-.12h-.43zm1.61.026c-.066 0-.12.053-.12.12v9.537c0 .066.054.12.12.12h.43c.066 0 .12-.054.12-.12V7.676c0-.067-.054-.12-.12-.12h-.43zm12.399 3.023c-.569 0-1.115.123-1.61.341a4.935 4.935 0 0 0-4.71-3.41c-.482 0-.943.078-1.378.221v8.835c.066.066.155.105.25.105h7.448A3.498 3.498 0 0 0 22.825 14.1c0-1.93-1.57-3.497-3.498-3.497z"/>
+  </svg>
+);
+
 export const InstagramIcon = ({ className = "w-4 h-4" }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-label="Instagram">
     <title>Instagram</title>
@@ -33,3 +75,19 @@ export const XIcon = ({ className = "w-4 h-4" }) => (
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
   </svg>
 );
+
+export const getPlatformIconComponent = (id) => {
+  switch (id) {
+    case 'youtube': return YouTubeIcon;
+    case 'youtubeMusic': return YouTubeMusicIcon;
+    case 'spotify': return SpotifyIcon;
+    case 'appleMusic': return AppleMusicIcon;
+    case 'anghami': return AnghamiIcon;
+    case 'jioSaavn': return JioSaavnIcon;
+    case 'wynk': return WynkIcon;
+    case 'amazonMusic': return AmazonMusicIcon;
+    case 'soundcloud': return SoundCloudIcon;
+    default: return YouTubeIcon;
+  }
+};
+

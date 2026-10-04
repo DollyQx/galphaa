@@ -56,11 +56,11 @@ export const MusicPage = ({ onOpenSongDetail }) => {
         </h1>
 
         <p className="font-handwriting text-2xl text-[#fcd34d]">
-          "Songs, compositions and sounds by G ALPHA."
+          "Songs, compositions and sounds by G Alphaa."
         </p>
 
         <p className="text-base text-[#94a3b8] max-w-xl mx-auto font-light leading-relaxed">
-          Official music catalogue written, composed, and produced by G ALPHA.
+          Official music catalogue written, composed, and produced by G Alphaa.
         </p>
       </div>
 

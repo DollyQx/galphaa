@@ -15,8 +15,8 @@ import {
 } from 'lucide-react';
 import { MusicCard } from '../components/MusicCard';
 import { YouTubeIcon } from '../components/icons/YouTubeIcon';
-import { SpotifyIcon, AppleMusicIcon } from '../components/SocialIcons';
-import { RELEASED_TRACKS, UNRELEASED_TRACKS, SOCIAL_LINKS } from '../data/musicData';
+import { getPlatformIconComponent } from '../components/SocialIcons';
+import { RELEASED_TRACKS, UNRELEASED_TRACKS, SOCIAL_LINKS, getTrackPlatformLinks } from '../data/musicData';
 import { POEMS } from '../data/poetryData';
 import { ARTIST_PROFILE } from '../data/aboutData';
 
@@ -25,9 +25,7 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
 
   // Featured / Latest Single: HAWA BHI GUZRE NA
   const latestRelease = RELEASED_TRACKS.find(t => t.id === 'hawa-bhi-guzre-na') || RELEASED_TRACKS[0];
-
-  // Available platform links for latest release
-  const availablePlatforms = [];
+  const latestPlatforms = getTrackPlatformLinks(latestRelease);
   if (latestRelease.youtubeUrl) availablePlatforms.push({ name: 'YouTube', url: latestRelease.youtubeUrl, icon: YouTubeIcon, color: 'text-[#dc2626]' });
   if (latestRelease.spotifyUrl) availablePlatforms.push({ name: 'Spotify', url: latestRelease.spotifyUrl, icon: SpotifyIcon, color: 'text-[#22c55e]' });
   if (latestRelease.appleMusicUrl) availablePlatforms.push({ name: 'Apple Music', url: latestRelease.appleMusicUrl, icon: AppleMusicIcon, color: 'text-[#f43f5e]' });
@@ -35,7 +33,7 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
   return (
     <div className="space-y-24 pb-20">
       
-      {/* 01 — WHO IS G ALPHA (HERO SECTION) */}
+      {/* 01 — WHO IS G Alphaa (HERO SECTION) */}
       <section className="relative min-h-[90vh] flex items-center justify-center pt-28 pb-16 overflow-hidden border-b border-white/5">
         
         {/* Atmosphere */}
@@ -48,7 +46,7 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
             
             <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-xl">
               <span className="text-xs font-bold tracking-widest text-[#f59e0b] uppercase">
-                01 — WHO IS G ALPHA
+                01 — WHO IS G Alphaa
               </span>
             </div>
 
@@ -99,14 +97,14 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
             <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
               <img
                 src={ARTIST_PROFILE.profileImage}
-                alt="G ALPHA Silhouette Composer Portrait"
+                alt="G Alphaa Silhouette Composer Portrait"
                 loading="lazy"
                 className="w-full h-[450px] sm:h-[520px] object-cover filter brightness-90 contrast-105 group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
               
               <div className="absolute bottom-6 left-6 right-6 space-y-2">
-                <span className="badge-amber font-semibold text-[11px]">G ALPHA</span>
+                <span className="badge-amber font-semibold text-[11px]">G Alphaa</span>
                 <p className="font-handwriting text-xl text-white">
                   "Every chord holds an unspoken silence..."
                 </p>
@@ -130,7 +128,7 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
                 Compositions & Original Releases
               </h2>
               <p className="text-sm text-[#94a3b8] font-light">
-                "Songs, compositions and sounds by G ALPHA."
+                "Songs, compositions and sounds by G Alphaa."
               </p>
             </div>
 
@@ -260,7 +258,7 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
                   {latestRelease.title}
                 </h2>
                 <p className="text-base text-[#f59e0b] font-semibold">
-                  G ALPHA
+                  G Alphaa
                 </p>
               </div>
 
@@ -272,43 +270,31 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
 
               <div className="space-y-3 pt-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#94a3b8] block">
-                  Listen on:
+                  Listen on Streaming Platforms:
                 </span>
                 
-                <div className="flex flex-wrap items-center gap-3">
-                  {availablePlatforms.length > 0 ? (
-                    availablePlatforms.map((plat, idx) => {
-                      const Icon = plat.icon;
-                      return (
-                        <a
-                          key={idx}
-                          href={plat.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-secondary text-xs py-2.5 px-4 gap-2"
-                        >
-                          <Icon className={`w-4 h-4 ${plat.color}`} />
-                          <span>{plat.name}</span>
-                        </a>
-                      );
-                    })
-                  ) : (
-                    <a
-                      href={SOCIAL_LINKS.youtube}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-secondary text-xs py-2.5 px-4 gap-2"
-                    >
-                      <YouTubeIcon className="w-4 h-4 text-[#dc2626]" />
-                      <span>YouTube Channel</span>
-                    </a>
-                  )}
+                <div className="flex flex-wrap items-center gap-2">
+                  {latestPlatforms.slice(0, 4).map((plat) => {
+                    const Icon = getPlatformIconComponent(plat.id);
+                    return (
+                      <a
+                        key={plat.id}
+                        href={plat.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-secondary text-xs py-2 px-3 gap-2"
+                      >
+                        <Icon className={`w-4 h-4 ${plat.color}`} />
+                        <span>{plat.name}</span>
+                      </a>
+                    );
+                  })}
 
                   <button
                     onClick={() => onOpenSongDetail(latestRelease)}
-                    className="btn-primary text-xs py-2.5 px-5 ml-auto"
+                    className="btn-primary text-xs py-2 px-4 ml-auto"
                   >
-                    <span>Full Song Info</span>
+                    <span>Full Song Info & Platforms</span>
                   </button>
                 </div>
               </div>
@@ -392,7 +378,7 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
               onClick={() => setActivePage('collaborate')}
               className="btn-primary text-xs py-3.5 px-7"
             >
-              <span>WORK WITH G ALPHA</span>
+              <span>WORK WITH G Alphaa</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 

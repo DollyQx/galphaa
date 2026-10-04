@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { X, Play, Share2, Check, UserCheck, Music, CheckCircle } from 'lucide-react';
-import { YoutubeIcon, SpotifyIcon, AppleMusicIcon } from './SocialIcons';
-import { SOCIAL_LINKS } from '../data/musicData';
+import { X, Play, Share2, Check, UserCheck, CheckCircle } from 'lucide-react';
+import { getPlatformIconComponent } from './SocialIcons';
+import { getTrackPlatformLinks } from '../data/musicData';
 
 export const SongDetailModal = ({ song, onClose, onOpenInquiry }) => {
   const [copied, setCopied] = useState(false);
@@ -17,11 +17,7 @@ export const SongDetailModal = ({ song, onClose, onOpenInquiry }) => {
     }
   };
 
-  // Determine dynamic platform buttons (ONLY render if URL exists)
-  const availablePlatforms = [];
-  if (song.youtubeUrl) availablePlatforms.push({ name: 'YouTube', url: song.youtubeUrl, icon: YoutubeIcon, color: 'text-[#dc2626]' });
-  if (song.spotifyUrl) availablePlatforms.push({ name: 'Spotify', url: song.spotifyUrl, icon: SpotifyIcon, color: 'text-[#22c55e]' });
-  if (song.appleMusicUrl) availablePlatforms.push({ name: 'Apple Music', url: song.appleMusicUrl, icon: AppleMusicIcon, color: 'text-[#f43f5e]' });
+  const platforms = getTrackPlatformLinks(song);
 
   // Map all possible credit fields dynamically
   const creditEntries = [];
@@ -113,7 +109,7 @@ export const SongDetailModal = ({ song, onClose, onOpenInquiry }) => {
                   {song.title}
                 </h2>
                 <p className="text-[#f59e0b] text-sm font-semibold tracking-wider mt-1">
-                  G ALPHA
+                  G Alphaa
                 </p>
               </div>
 
@@ -127,7 +123,7 @@ export const SongDetailModal = ({ song, onClose, onOpenInquiry }) => {
                 </div>
               )}
 
-              {/* Credits Section (ONLY display non-empty fields) */}
+              {/* Credits Section */}
               {creditEntries.length > 0 && (
                 <div className="space-y-2">
                   <h4 className="text-xs font-bold uppercase tracking-widest text-[#f59e0b] flex items-center gap-2">
@@ -145,48 +141,38 @@ export const SongDetailModal = ({ song, onClose, onOpenInquiry }) => {
                 </div>
               )}
 
-              {/* LISTEN ELSEWHERE */}
-              <div className="space-y-2 pt-1">
-                <h4 className="text-xs font-bold uppercase tracking-widest text-[#94a3b8]">
-                  LISTEN ELSEWHERE
-                </h4>
-                <div className="flex flex-wrap items-center gap-2">
-                  {availablePlatforms.length > 0 ? (
-                    availablePlatforms.map((plat, idx) => {
-                      const Icon = plat.icon;
-                      return (
-                        <a
-                          key={idx}
-                          href={plat.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-secondary text-xs py-2 px-3.5 gap-2"
-                        >
-                          <Icon className={`w-4 h-4 ${plat.color}`} />
-                          <span>{plat.name}</span>
-                        </a>
-                      );
-                    })
-                  ) : (
-                    <a
-                      href={SOCIAL_LINKS.youtube}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-secondary text-xs py-2 px-3.5 gap-2"
-                    >
-                      <YoutubeIcon className="w-4 h-4 text-[#dc2626]" />
-                      <span>YouTube Channel</span>
-                    </a>
-                  )}
-
-                  {/* Share button */}
+              {/* STREAMING PLATFORMS */}
+              <div className="space-y-2.5 pt-1">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-bold uppercase tracking-widest text-[#94a3b8]">
+                    AVAILABLE ON STREAMING PLATFORMS
+                  </h4>
                   <button
                     onClick={handleShare}
-                    className="btn-secondary text-xs py-2 px-3.5 gap-2 ml-auto"
+                    className="inline-flex items-center gap-1.5 text-xs text-[#f59e0b] hover:underline bg-transparent border-none cursor-pointer"
                   >
-                    {copied ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4 text-[#f59e0b]" />}
-                    <span>{copied ? 'Copied!' : 'Share'}</span>
+                    {copied ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Share2 className="w-3.5 h-3.5 text-[#f59e0b]" />}
+                    <span>{copied ? 'Link Copied' : 'Share'}</span>
                   </button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {platforms.map((plat) => {
+                    const Icon = getPlatformIconComponent(plat.id);
+                    return (
+                      <a
+                        key={plat.id}
+                        href={plat.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10 ${plat.bg} text-xs text-white/90 hover:text-white transition-all duration-200`}
+                        title={`Listen on ${plat.name}`}
+                      >
+                        <Icon className={`w-4 h-4 ${plat.color} flex-shrink-0`} />
+                        <span className="truncate text-[11px] font-medium">{plat.name}</span>
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -214,3 +200,4 @@ export const SongDetailModal = ({ song, onClose, onOpenInquiry }) => {
     </div>
   );
 };
+

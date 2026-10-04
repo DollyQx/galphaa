@@ -25,7 +25,7 @@ export const PoetryPage = () => {
         </p>
 
         <p className="text-base text-[#94a3b8] max-w-xl mx-auto font-light leading-relaxed">
-          Verses, nazms, and ghazal couplets written by G ALPHA.
+          Verses, nazms, and ghazal couplets written by G Alphaa.
         </p>
       </div>
 
