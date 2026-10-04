@@ -14,7 +14,8 @@ import {
   UserCheck
 } from 'lucide-react';
 import { MusicCard } from '../components/MusicCard';
-import { YoutubeIcon, SpotifyIcon, AppleMusicIcon } from '../components/SocialIcons';
+import { YouTubeIcon } from '../components/icons/YouTubeIcon';
+import { SpotifyIcon, AppleMusicIcon } from '../components/SocialIcons';
 import { RELEASED_TRACKS, UNRELEASED_TRACKS, SOCIAL_LINKS } from '../data/musicData';
 import { POEMS } from '../data/poetryData';
 import { ARTIST_PROFILE } from '../data/aboutData';
@@ -27,7 +28,7 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
 
   // Available platform links for latest release
   const availablePlatforms = [];
-  if (latestRelease.youtubeUrl) availablePlatforms.push({ name: 'YouTube', url: latestRelease.youtubeUrl, icon: YoutubeIcon, color: 'text-[#dc2626]' });
+  if (latestRelease.youtubeUrl) availablePlatforms.push({ name: 'YouTube', url: latestRelease.youtubeUrl, icon: YouTubeIcon, color: 'text-[#dc2626]' });
   if (latestRelease.spotifyUrl) availablePlatforms.push({ name: 'Spotify', url: latestRelease.spotifyUrl, icon: SpotifyIcon, color: 'text-[#22c55e]' });
   if (latestRelease.appleMusicUrl) availablePlatforms.push({ name: 'Apple Music', url: latestRelease.appleMusicUrl, icon: AppleMusicIcon, color: 'text-[#f43f5e]' });
 
@@ -298,7 +299,7 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
                       rel="noopener noreferrer"
                       className="btn-secondary text-xs py-2.5 px-4 gap-2"
                     >
-                      <YoutubeIcon className="w-4 h-4 text-[#dc2626]" />
+                      <YouTubeIcon className="w-4 h-4 text-[#dc2626]" />
                       <span>YouTube Channel</span>
                     </a>
                   )}
