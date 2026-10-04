@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Mail, Youtube, Send, CheckCircle2, MapPin, Globe } from 'lucide-react';
+import { Mail, Send, CheckCircle2, MapPin, Globe } from 'lucide-react';
+import { YoutubeIcon } from '../components/SocialIcons';
 import { SOCIAL_LINKS } from '../data/musicData';
 
 export const ContactPage = () => {
@@ -62,7 +63,7 @@ export const ContactPage = () => {
                 className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#dc2626] hover:bg-[#dc2626]/10 transition-all group"
               >
                 <div className="w-10 h-10 rounded-full bg-[#dc2626]/20 text-[#dc2626] flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Youtube className="w-5 h-5" />
+                  <YoutubeIcon className="w-5 h-5" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">YouTube Official</h4>

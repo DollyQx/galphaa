@@ -18,14 +18,28 @@ export function App() {
   const [selectedSong, setSelectedSong] = useState(null);
   const [selectedPoem, setSelectedPoem] = useState(null);
   const [inquirySubject, setInquirySubject] = useState(null);
+  const [inquirySong, setInquirySong] = useState(null);
 
-  // Scroll to top on page switch
+  // Dynamic Page Title & Scroll to top on page switch
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const pageTitles = {
+      home: 'G ALPHA — Musician, Lyricist, Composer & Shayar',
+      music: 'G ALPHA — Music',
+      poetry: 'G ALPHA — Poetry',
+      unreleased: 'G ALPHA — Unreleased Catalogue',
+      about: 'G ALPHA — About',
+      collaborate: 'G ALPHA — Collaborate',
+      contact: 'G ALPHA — Contact'
+    };
+
+    document.title = pageTitles[activePage] || 'G ALPHA — Musician, Lyricist, Composer & Shayar';
   }, [activePage]);
 
-  const handleOpenInquiry = (subject = '') => {
+  const handleOpenInquiry = (subject = '', songTitle = '') => {
     setInquirySubject(subject || 'General Inquiry');
+    setInquirySong(songTitle || '');
   };
 
   return (
@@ -97,7 +111,8 @@ export function App() {
       {inquirySubject !== null && (
         <InquiryModal
           initialSubject={inquirySubject}
-          onClose={() => setInquirySubject(null)}
+          initialSong={inquirySong}
+          onClose={() => { setInquirySubject(null); setInquirySong(null); }}
         />
       )}
 
@@ -105,6 +120,6 @@ export function App() {
       <Footer setActivePage={setActivePage} />
     </div>
   );
-}
+};
 
 export default App;

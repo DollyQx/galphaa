@@ -1,40 +1,45 @@
 /**
- * G ALPHA - Artist Biography & Profile Data
- * Editable data structure for CMS integration
+ * G ALPHA - Official Artist Biography & Data Architecture
+ * REFINEMENT PASS 3 - Real Artist Identity
+ * 
+ * Note: All fields are fully editable. No fake factual claims (awards, listener counts, etc.).
  */
 
 export const ARTIST_PROFILE = {
-  name: "G ALPHA",
-  disciplines: ["Musician", "Lyricist", "Composer", "Poet / Shayar"],
-  headline: "Stories in Sound. Feelings in Words.",
-  tagline: "A musician, lyricist, composer and shayar creating melodies and verses for the moments that stay.",
-  bio: [
-    "G ALPHA is an independent musician, lyricist, composer, and shayar whose creative expression spans soulful acoustic compositions, evocative poetry, and cinematic soundscapes.",
-    "Driven by narrative songwriting and deep emotional clarity, G ALPHA crafts pieces that explore themes of solitude, love, reflection, and human connection.",
-    "Whether creating compositions for independent releases, film and series placements, or writing verses meant for quiet reading, G ALPHA focuses on authenticity of emotion and structural craft."
+  artistName: "G ALPHA",
+  roles: ["Musician", "Lyricist", "Composer", "Poet / Shayar"],
+  headline: "Har lafz ek khamoshi hai... Har dhun ek safar.",
+  tagline: "Stories in sound. Feelings in words.",
+  location: "India",
+  profileImage: "/images/about.png",
+  
+  shortBio: "G ALPHA is an independent music artist, lyricist, composer, and shayar creating atmospheric compositions and Hindustani poetry.",
+  
+  longBio: [
+    "G ALPHA approaches music and poetry as two interconnected expressions of human emotion. Working across songwriting, acoustic & vocal compositions, and Hindustani poetry, the work balances lyrical intimacy with cinematic sound design.",
+    "Driven by storytelling, G ALPHA crafts original lyrics and melodic frameworks designed to evoke quiet reflection and emotional depth, maintaining artistic independence across released and private unreleased works."
   ],
+
   artisticPillars: [
     {
+      number: "01",
       title: "Composition & Melodic Craft",
-      description: "Creating memorable acoustic and atmospheric melodies designed around vocal expression and narrative depth."
+      description: "Building original melodic structures, acoustic arrangements, and vocal harmonies."
     },
     {
+      number: "02",
       title: "Lyricism & Poetic Writing",
-      description: "Crafting original Hindustani and Urdu Shayari and lyrics that prioritize poetic imagery over superficial rhymes."
+      description: "Crafting Hindustani lyrics, Ghazal couplets, and evocative Shayari."
     },
     {
+      number: "03",
       title: "Atmospheric Sound Design",
-      description: "Blending organic acoustic instruments with subtle ambient textures for cinematic depth."
+      description: "Layering ambient textures and minimalist production for emotional resonance."
     },
     {
+      number: "04",
       title: "Versatile Songwriting",
-      description: "Developing compositions tailored for film, web series, independent collaborations, and custom release projects."
+      description: "Creating compositions for film, web series, independent releases, and private licensing."
     }
-  ],
-  collaborationFocus: [
-    "Film & Web Series Original Scores / Songs",
-    "Lyric writing and Hindustani Shayari for fellow artists",
-    "Custom Compositions & Production",
-    "Exclusive Licensing of Unreleased Catalogue"
   ]
 };

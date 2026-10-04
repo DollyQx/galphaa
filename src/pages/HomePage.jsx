@@ -3,144 +3,112 @@ import {
   Play, 
   Music, 
   Feather, 
-  Youtube, 
   ChevronRight, 
   Sparkles, 
   Disc, 
-  Clock, 
-  Share2, 
-  Check,
   ArrowRight,
   ShieldCheck,
-  ExternalLink
+  Lock,
+  ArrowDownRight,
+  BookOpen,
+  UserCheck
 } from 'lucide-react';
-import { RELEASED_TRACKS, SOCIAL_LINKS } from '../data/musicData';
+import { MusicCard } from '../components/MusicCard';
+import { YoutubeIcon, SpotifyIcon, AppleMusicIcon } from '../components/SocialIcons';
+import { RELEASED_TRACKS, UNRELEASED_TRACKS, SOCIAL_LINKS } from '../data/musicData';
+import { POEMS } from '../data/poetryData';
+import { ARTIST_PROFILE } from '../data/aboutData';
 
 export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => {
-  const [copied, setCopied] = useState(false);
-  
-  // Latest Release Track
-  const latestTrack = RELEASED_TRACKS.find(t => t.id === 'hawa-bhi-guzre-na') || RELEASED_TRACKS[0];
-  
-  // Featured tracks for catalogue
-  const featuredTracks = RELEASED_TRACKS.filter(t => t.featured || t.id !== 'hawa-bhi-guzre-na');
+  const [showEmbed, setShowEmbed] = useState(false);
 
-  const handleShareLatest = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    }
-  };
+  // Featured / Latest Single: HAWA BHI GUZRE NA
+  const latestRelease = RELEASED_TRACKS.find(t => t.id === 'hawa-bhi-guzre-na') || RELEASED_TRACKS[0];
+
+  // Available platform links for latest release
+  const availablePlatforms = [];
+  if (latestRelease.youtubeUrl) availablePlatforms.push({ name: 'YouTube', url: latestRelease.youtubeUrl, icon: YoutubeIcon, color: 'text-[#dc2626]' });
+  if (latestRelease.spotifyUrl) availablePlatforms.push({ name: 'Spotify', url: latestRelease.spotifyUrl, icon: SpotifyIcon, color: 'text-[#22c55e]' });
+  if (latestRelease.appleMusicUrl) availablePlatforms.push({ name: 'Apple Music', url: latestRelease.appleMusicUrl, icon: AppleMusicIcon, color: 'text-[#f43f5e]' });
 
   return (
-    <div className="min-h-screen pt-24 pb-20 space-y-24">
+    <div className="space-y-24 pb-20">
       
-      {/* HERO SECTION */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-12">
+      {/* 01 — WHO IS G ALPHA (HERO SECTION) */}
+      <section className="relative min-h-[90vh] flex items-center justify-center pt-28 pb-16 overflow-hidden border-b border-white/5">
         
-        {/* Ambient background glows */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#f59e0b]/10 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute top-1/3 left-1/4 w-[350px] h-[350px] bg-[#dc2626]/10 rounded-full blur-[120px] pointer-events-none" />
+        {/* Atmosphere */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0d0e14] via-[#070709] to-[#070709]" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[#f59e0b]/10 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="container-custom relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left Text & CTA Column */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+          <div className="lg:col-span-7 space-y-8 text-left">
             
-            {/* Handwritten Top Annotation */}
-            <div className="inline-block relative">
-              <span className="font-handwriting text-2xl text-[#fcd34d] block transform -rotate-2 mb-1">
-                ~ Verses born under midnight lights ~
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-xl">
+              <span className="text-xs font-bold tracking-widest text-[#f59e0b] uppercase">
+                01 — WHO IS G ALPHA
               </span>
             </div>
 
-            {/* Subtitle Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold tracking-[0.2em] text-[#f59e0b] uppercase">
-              <span>MUSICIAN</span>
-              <span>·</span>
-              <span>LYRICIST</span>
-              <span>·</span>
-              <span>COMPOSER</span>
-              <span>·</span>
-              <span>SHAYAR</span>
+            <div className="space-y-3">
+              <h1 className="font-serif-title text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-none">
+                G ALPHA
+              </h1>
+              
+              <p className="text-xs sm:text-sm font-semibold tracking-[0.3em] text-[#f59e0b] uppercase">
+                MUSICIAN · LYRICIST · COMPOSER · SHAYAR
+              </p>
             </div>
 
-            {/* Main Artistic Headline */}
-            <h1 className="font-serif-title text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1]">
-              Stories in Sound. <br />
-              <span className="amber-gradient-text">Feelings in Words.</span>
-            </h1>
+            <div className="space-y-2 max-w-xl">
+              <h2 className="font-serif-title text-2xl sm:text-4xl text-white font-medium leading-tight">
+                STORIES IN SOUND.<br />FEELINGS IN WORDS.
+              </h2>
+              <p className="font-handwriting text-2xl text-[#fcd34d]">
+                "{ARTIST_PROFILE.headline}"
+              </p>
+              <p className="text-sm text-[#94a3b8] leading-relaxed font-light pt-2">
+                {ARTIST_PROFILE.shortBio}
+              </p>
+            </div>
 
-            {/* Supporting Text */}
-            <p className="text-base sm:text-lg text-[#94a3b8] max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
-              A musician, lyricist, composer and shayar creating melodies and verses for the moments that stay.
-            </p>
-
-            {/* CTAs */}
-            <div className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <button
                 onClick={() => setActivePage('music')}
-                className="btn-primary text-sm py-3.5 px-7"
+                className="btn-primary text-xs py-3.5 px-7 shadow-xl shadow-[#f59e0b]/10"
               >
                 <Music className="w-4 h-4" />
-                <span>Listen to Music</span>
+                <span>LISTEN TO MUSIC</span>
               </button>
 
               <button
                 onClick={() => setActivePage('poetry')}
-                className="btn-secondary text-sm py-3.5 px-7"
+                className="btn-secondary text-xs py-3.5 px-7"
               >
                 <Feather className="w-4 h-4 text-[#f59e0b]" />
-                <span>Read My Poetry</span>
+                <span>READ POETRY</span>
               </button>
             </div>
 
-            {/* Subtle Handwritten Annotation below buttons */}
-            <p className="font-handwriting text-lg text-[#94a3b8]/80 pt-2">
-              "Every chord holds an unspoken silence..."
-            </p>
-
           </div>
 
-          {/* Right Hero Visual (Cinematic Artist Representation) */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-md lg:max-w-none">
+          {/* Right Hero Image Card */}
+          <div className="lg:col-span-5">
+            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
+              <img
+                src={ARTIST_PROFILE.profileImage}
+                alt="G ALPHA Silhouette Composer Portrait"
+                loading="lazy"
+                className="w-full h-[450px] sm:h-[520px] object-cover filter brightness-90 contrast-105 group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
               
-              {/* Outer Glowing Ring */}
-              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-[#f59e0b]/40 via-[#dc2626]/20 to-[#f59e0b]/30 blur-lg opacity-75 animate-pulse" />
-
-              {/* Main Image Frame */}
-              <div className="relative rounded-2xl overflow-hidden border border-white/15 bg-[#0d0e14] shadow-2xl group">
-                <img
-                  src="/images/hero.png"
-                  alt="G ALPHA Artist Silhouette"
-                  className="w-full h-[460px] sm:h-[520px] object-cover filter brightness-90 contrast-105 group-hover:scale-105 transition-transform duration-700"
-                />
-                
-                {/* Vignette Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070709] via-transparent to-black/30" />
-
-                {/* Floating Handwritten Annotation on Visual */}
-                <div className="absolute top-6 right-6 bg-[#070709]/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-xs font-handwriting text-[#fcd34d] transform rotate-3">
-                  G ALPHA Official
-                </div>
-
-                {/* Bottom Overlay Label */}
-                <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-[#0d0e14]/90 backdrop-blur-md border border-white/10 flex items-center justify-between">
-                  <div>
-                    <h3 className="font-serif-title text-lg font-bold text-white">G ALPHA</h3>
-                    <p className="text-xs text-[#94a3b8]">Independent Artist & Composer</p>
-                  </div>
-                  <button
-                    onClick={() => setActivePage('about')}
-                    className="text-xs text-[#f59e0b] hover:underline font-semibold flex items-center gap-1 bg-transparent border-none cursor-pointer"
-                  >
-                    <span>Biography</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-
+              <div className="absolute bottom-6 left-6 right-6 space-y-2">
+                <span className="badge-amber font-semibold text-[11px]">G ALPHA</span>
+                <p className="font-handwriting text-xl text-white">
+                  "Every chord holds an unspoken silence..."
+                </p>
               </div>
             </div>
           </div>
@@ -148,154 +116,198 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
         </div>
       </section>
 
-      {/* HOME: MUSIC + POETRY TWIN CARDS */}
+      {/* 02 — THE MUSIC (EDITORIAL FULL-WIDTH SECTION) */}
       <section className="container-custom">
-        <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#f59e0b]">
-            ARTISTIC DOMAINS
-          </span>
-          <h2 className="font-serif-title text-3xl sm:text-4xl font-bold text-white">
-            Sound and Solitude
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="rounded-3xl bg-[#0d0e14] border border-white/10 p-8 sm:p-12 shadow-2xl space-y-8">
           
-          {/* THE MUSIC CARD */}
-          <div className="cinematic-card p-8 sm:p-10 flex flex-col justify-between group">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-[#f59e0b]/10 border border-[#f59e0b]/30 flex items-center justify-center text-[#f59e0b] group-hover:scale-110 transition-transform">
-                <Music className="w-6 h-6" />
-              </div>
-              <span className="text-xs font-bold tracking-widest text-[#94a3b8] uppercase">
-                COMPOSITIONS & RELEASES
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/10">
+            <div className="space-y-2 max-w-xl">
+              <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#f59e0b]">
+                02 — THE MUSIC
               </span>
-              <h3 className="font-serif-title text-3xl font-bold text-white group-hover:text-[#ff9e2c] transition-colors">
-                THE MUSIC
-              </h3>
-              <p className="text-[#94a3b8] text-base leading-relaxed">
+              <h2 className="font-serif-title text-3xl sm:text-4xl font-bold text-white">
+                Compositions & Original Releases
+              </h2>
+              <p className="text-sm text-[#94a3b8] font-light">
                 "Songs, compositions and sounds by G ALPHA."
               </p>
             </div>
 
-            <div className="pt-8">
-              <button
-                onClick={() => setActivePage('music')}
-                className="btn-primary w-full text-xs py-3 justify-between"
-              >
-                <span>Explore Music</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
+            <button
+              onClick={() => setActivePage('music')}
+              className="btn-primary text-xs py-3 px-6 self-start md:self-auto"
+            >
+              <span>Explore All {RELEASED_TRACKS.length} Songs</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
 
-          {/* THE POETRY CARD */}
-          <div className="cinematic-card p-8 sm:p-10 flex flex-col justify-between group">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-[#f59e0b]/10 border border-[#f59e0b]/30 flex items-center justify-center text-[#f59e0b] group-hover:scale-110 transition-transform">
-                <Feather className="w-6 h-6" />
-              </div>
-              <span className="text-xs font-bold tracking-widest text-[#94a3b8] uppercase">
-                VERSES & SHAYARI
-              </span>
-              <h3 className="font-serif-title text-3xl font-bold text-white group-hover:text-[#ff9e2c] transition-colors">
-                THE POETRY
-              </h3>
-              <p className="text-[#94a3b8] text-base leading-relaxed">
-                "Poetry, thoughts and verses by G ALPHA."
-              </p>
-            </div>
-
-            <div className="pt-8">
-              <button
-                onClick={() => setActivePage('poetry')}
-                className="btn-secondary w-full text-xs py-3 justify-between"
-              >
-                <span>Explore Poetry</span>
-                <ArrowRight className="w-4 h-4 text-[#f59e0b]" />
-              </button>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {RELEASED_TRACKS.slice(0, 4).map((track) => (
+              <MusicCard key={track.id} track={track} onOpenDetail={onOpenSongDetail} />
+            ))}
           </div>
 
         </div>
       </section>
 
-      {/* LATEST RELEASE FEATURE SECTION */}
+      {/* 03 — THE POETRY (EDITORIAL LITERATURE SECTION) */}
       <section className="container-custom">
-        <div className="relative rounded-3xl bg-gradient-to-br from-[#12141d] via-[#0d0e14] to-[#070709] border border-white/10 p-8 sm:p-12 overflow-hidden shadow-2xl">
+        <div className="rounded-3xl bg-gradient-to-br from-[#12131c] via-[#0d0e14] to-[#070709] border border-white/10 p-8 sm:p-12 shadow-2xl space-y-8">
           
-          {/* Subtle Ambient Light */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-[#f59e0b]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#f59e0b]">
+              03 — THE POETRY
+            </span>
+            <h2 className="font-serif-title text-3xl sm:text-5xl font-bold text-white">
+              THE POETRY
+            </h2>
+            <p className="font-handwriting text-2xl text-[#fcd34d]">
+              "Words that don't need a melody."
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+          {/* Featured Poem Specimen */}
+          <div className="max-w-3xl mx-auto bg-[#070709] p-8 sm:p-10 rounded-2xl border border-white/10 space-y-6 text-center shadow-xl">
+            <span className="text-[10px] font-bold text-[#f59e0b] uppercase tracking-widest block">
+              FEATURED VERSE
+            </span>
             
-            {/* Artwork Column */}
-            <div className="lg:col-span-5">
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
-                <img
-                  src={latestTrack.thumbnail}
-                  alt={latestTrack.title}
-                  className="w-full aspect-square object-cover filter contrast-105 group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                
-                <div className="absolute top-4 left-4">
-                  <span className="badge-amber font-bold">LATEST RELEASE</span>
+            <h3 className="font-serif-title text-2xl font-bold text-white">
+              {POEMS[0].title}
+            </h3>
+
+            <p className="font-serif-editorial text-lg sm:text-xl text-[#94a3b8] italic whitespace-pre-line leading-relaxed max-w-xl mx-auto">
+              "{POEMS[0].excerpt}"
+            </p>
+
+            <button
+              onClick={() => setActivePage('poetry')}
+              className="btn-secondary text-xs py-2.5 px-6 mx-auto"
+            >
+              <BookOpen className="w-4 h-4 text-[#f59e0b]" />
+              <span>Read All Verses</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 04 — LATEST RELEASE (HAWA BHI GUZRE NA) */}
+      <section className="container-custom">
+        <div className="relative rounded-3xl bg-[#0d0e14] border border-white/10 p-8 sm:p-12 shadow-2xl overflow-hidden">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            
+            <div className="lg:col-span-6">
+              {showEmbed && latestRelease.youtubeEmbedId ? (
+                <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black border border-white/10">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${latestRelease.youtubeEmbedId}?autoplay=1`}
+                    title={latestRelease.title}
+                    className="w-full h-full border-none"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
                 </div>
-              </div>
+              ) : (
+                <div className="relative aspect-square sm:aspect-video lg:aspect-square rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
+                  <img
+                    src={latestRelease.thumbnail}
+                    alt={latestRelease.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover filter brightness-90 contrast-105 group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  
+                  <div className="absolute top-4 left-4">
+                    <span className="badge-amber font-bold text-xs uppercase tracking-wider shadow-lg">
+                      04 — LATEST RELEASE
+                    </span>
+                  </div>
+
+                  {latestRelease.youtubeEmbedId ? (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <button
+                        onClick={() => setShowEmbed(true)}
+                        className="w-16 h-16 rounded-full bg-[#f59e0b] text-[#070709] flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
+                      >
+                        <Play className="w-7 h-7 fill-current ml-1" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="absolute bottom-6 left-6 right-6">
+                      <button
+                        onClick={() => onOpenSongDetail(latestRelease)}
+                        className="btn-primary text-xs py-2.5 px-5"
+                      >
+                        <Play className="w-4 h-4 fill-current" />
+                        <span>View Single Details</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
-            {/* Details & Player Column */}
-            <div className="lg:col-span-7 space-y-6">
-              <div>
-                <span className="text-xs font-bold tracking-[0.2em] text-[#f59e0b] uppercase">
-                  CURRENT SINGLE
+            <div className="lg:col-span-6 space-y-6">
+              <div className="space-y-2">
+                <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#f59e0b]">
+                  FEATURED SINGLE
                 </span>
-                <h2 className="font-serif-title text-3xl sm:text-5xl font-bold text-white tracking-wide mt-1">
-                  {latestTrack.title}
+                <h2 className="font-serif-title text-4xl sm:text-5xl font-bold text-white leading-tight">
+                  {latestRelease.title}
                 </h2>
-                <p className="text-sm font-semibold text-[#94a3b8] mt-1">
-                  ARTIST: <span className="text-white">{latestTrack.artist}</span>
+                <p className="text-base text-[#f59e0b] font-semibold">
+                  G ALPHA
                 </p>
               </div>
 
-              <p className="text-sm text-[#94a3b8] leading-relaxed font-serif-editorial text-lg italic border-l-2 border-[#f59e0b] pl-4">
-                "{latestTrack.description}"
-              </p>
+              {latestRelease.description && (
+                <p className="text-sm text-[#94a3b8] font-serif-editorial text-lg italic leading-relaxed">
+                  "{latestRelease.description}"
+                </p>
+              )}
 
-              {/* Streaming Platforms Section (ONLY renders platforms with actual URLs) */}
               <div className="space-y-3 pt-2">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#94a3b8]">
-                  Stream & Watch
-                </h4>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#94a3b8] block">
+                  Listen on:
+                </span>
                 
                 <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    onClick={() => onOpenSongDetail(latestTrack)}
-                    className="btn-primary text-xs py-2.5 px-5"
-                  >
-                    <Play className="w-4 h-4 fill-current" />
-                    <span>Listen Now</span>
-                  </button>
-
-                  {SOCIAL_LINKS.youtube && (
+                  {availablePlatforms.length > 0 ? (
+                    availablePlatforms.map((plat, idx) => {
+                      const Icon = plat.icon;
+                      return (
+                        <a
+                          key={idx}
+                          href={plat.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-secondary text-xs py-2.5 px-4 gap-2"
+                        >
+                          <Icon className={`w-4 h-4 ${plat.color}`} />
+                          <span>{plat.name}</span>
+                        </a>
+                      );
+                    })
+                  ) : (
                     <a
-                      href={latestTrack.youtubeUrl || SOCIAL_LINKS.youtube}
+                      href={SOCIAL_LINKS.youtube}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn-secondary text-xs py-2.5 px-4 gap-2"
                     >
-                      <Youtube className="w-4 h-4 text-[#dc2626]" />
-                      <span>YouTube</span>
+                      <YoutubeIcon className="w-4 h-4 text-[#dc2626]" />
+                      <span>YouTube Channel</span>
                     </a>
                   )}
 
                   <button
-                    onClick={handleShareLatest}
-                    className="btn-secondary text-xs py-2.5 px-3.5 gap-2"
+                    onClick={() => onOpenSongDetail(latestRelease)}
+                    className="btn-primary text-xs py-2.5 px-5 ml-auto"
                   >
-                    {copied ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4 text-[#f59e0b]" />}
-                    <span>{copied ? 'Copied!' : 'Share'}</span>
+                    <span>Full Song Info</span>
                   </button>
                 </div>
               </div>
@@ -303,71 +315,94 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
             </div>
 
           </div>
+
         </div>
       </section>
 
-      {/* FEATURED MUSIC CATALOGUE (HORIZONTAL SCROLLABLE) */}
-      <section className="container-custom space-y-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#f59e0b]">
-              FEATURED TRACKS
-            </span>
-            <h2 className="font-serif-title text-3xl font-bold text-white">
-              Songs & Compositions
-            </h2>
+      {/* 05 — THE UNRELEASED CATALOGUE */}
+      <section className="container-custom">
+        <div className="rounded-3xl bg-gradient-to-br from-[#180a0c] via-[#0d0e14] to-[#070709] border border-[#dc2626]/30 p-8 sm:p-12 shadow-2xl space-y-8">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/10">
+            <div className="space-y-2 max-w-xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#dc2626]/20 border border-[#dc2626]/40 text-[10px] font-bold text-[#fca5a5] uppercase">
+                <Lock className="w-3 h-3 text-[#dc2626]" />
+                <span>05 — THE UNRELEASED CATALOGUE</span>
+              </div>
+              <h2 className="font-serif-title text-3xl sm:text-4xl font-bold text-white">
+                Private Vault (28 Compositions)
+              </h2>
+              <p className="font-handwriting text-2xl text-[#fcd34d]">
+                "Some songs are waiting for the right story."
+              </p>
+            </div>
+
+            <button
+              onClick={() => setActivePage('unreleased')}
+              className="btn-secondary text-xs py-3 px-6 hover:border-[#dc2626] self-start md:self-auto"
+            >
+              <Lock className="w-4 h-4 text-[#dc2626]" />
+              <span>Explore Private Vault</span>
+            </button>
           </div>
 
-          <button
-            onClick={() => setActivePage('music')}
-            className="text-xs text-[#f59e0b] hover:underline font-semibold flex items-center gap-1 bg-transparent border-none cursor-pointer"
-          >
-            <span>View All Releases ({RELEASED_TRACKS.length})</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Scrollable Container */}
-        <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
-          {featuredTracks.map((track) => (
-            <div
-              key={track.id}
-              onClick={() => onOpenSongDetail(track)}
-              className="cinematic-card flex-shrink-0 w-72 p-4 cursor-pointer group space-y-3"
-            >
-              <div className="relative aspect-square rounded-lg overflow-hidden bg-black/50">
-                <img
-                  src={track.thumbnail}
-                  alt={track.title}
-                  className="w-full h-full object-cover filter brightness-90 group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-[#f59e0b] text-[#070709] flex items-center justify-center shadow-lg">
-                    <Play className="w-5 h-5 fill-current ml-0.5" />
-                  </div>
-                </div>
-                <div className="absolute top-2 left-2">
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-black/60 text-[#f59e0b] backdrop-blur-md border border-white/10 font-bold">
-                    {track.status}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {UNRELEASED_TRACKS.slice(0, 3).map((track, idx) => (
+              <div key={track.id} className="bg-[#070709] p-6 rounded-2xl border border-white/10 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-serif-title text-xl font-bold text-[#f59e0b]">
+                    0{idx + 1}
                   </span>
+                  <span className="badge-crimson text-[9px]">UNRELEASED · PRIVATE</span>
                 </div>
+                <h4 className="font-serif-title text-lg font-bold text-white uppercase">{track.title}</h4>
+                <p className="text-xs text-[#94a3b8]">Original composition</p>
+                <button
+                  onClick={() => onOpenInquiry(`PRIVATE PREVIEW REQUEST: ${track.title}`, track.title)}
+                  className="btn-secondary w-full text-xs py-2 mt-2"
+                >
+                  Request Private Preview
+                </button>
               </div>
+            ))}
+          </div>
 
-              <div>
-                <h4 className="font-serif-title text-base font-bold text-white group-hover:text-[#f59e0b] transition-colors truncate">
-                  {track.title}
-                </h4>
-                <p className="text-xs text-[#94a3b8] mt-0.5">{track.artist}</p>
-              </div>
+        </div>
+      </section>
 
-              {track.genre && (
-                <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] text-[#64748b]">
-                  <span>{track.genre}</span>
-                  <span className="text-[#f59e0b]">Details →</span>
-                </div>
-              )}
-            </div>
-          ))}
+      {/* 06 — WORK TOGETHER */}
+      <section className="container-custom">
+        <div className="rounded-3xl bg-gradient-to-r from-[#141622] via-[#0d0e14] to-[#070709] border border-white/10 p-8 sm:p-12 text-center max-w-4xl mx-auto space-y-6">
+          
+          <div className="space-y-3 max-w-2xl mx-auto">
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#f59e0b]">
+              06 — WORK TOGETHER
+            </span>
+            <h2 className="font-serif-title text-3xl sm:text-4xl font-bold text-white tracking-tight">
+              SOME STORIES NEED MUSIC.<br />SOME JUST NEED WORDS.
+            </h2>
+            <p className="text-sm text-[#94a3b8] font-light leading-relaxed">
+              For artists, filmmakers, labels, brands and creators looking for original music, lyrics, or licensing.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <button
+              onClick={() => setActivePage('collaborate')}
+              className="btn-primary text-xs py-3.5 px-7"
+            >
+              <span>WORK WITH G ALPHA</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => setActivePage('unreleased')}
+              className="btn-secondary text-xs py-3.5 px-7"
+            >
+              <span>EXPLORE UNRELEASED</span>
+            </button>
+          </div>
+
         </div>
       </section>
 
