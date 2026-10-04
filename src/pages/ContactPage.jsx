@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Mail, Send, CheckCircle2, MapPin, Globe } from 'lucide-react';
+import { Mail, Send, CheckCircle2, Globe } from 'lucide-react';
 import { YouTubeIcon } from '../components/icons/YouTubeIcon';
-import { SOCIAL_LINKS } from '../data/musicData';
+import { useData } from '../context/DataContext';
 
 export const ContactPage = () => {
+  const { socialLinks, addInquiry } = useData();
   const [contactData, setContactData] = useState({
     name: '',
     email: '',
@@ -12,8 +13,24 @@ export const ContactPage = () => {
   });
   const [submitted, setSubmitted] = useState(false);
 
+  const youtubeUrl = (socialLinks && socialLinks.youtube) || 'https://www.youtube.com/@GAlphaaMusic/videos';
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Log directly into CRM
+    addInquiry({
+      name: contactData.name,
+      email: contactData.email,
+      phone: '',
+      subject: contactData.subject || 'Direct Contact Form Submission',
+      songTitle: null,
+      projectType: 'General / Management Inquiry',
+      timeline: 'Standard',
+      budget: 'Unspecified',
+      message: contactData.message,
+    });
+
     setSubmitted(true);
   };
 
@@ -57,7 +74,7 @@ export const ContactPage = () => {
               
               {/* YouTube Channel */}
               <a
-                href={SOCIAL_LINKS.youtube}
+                href={youtubeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#dc2626] hover:bg-[#dc2626]/10 transition-all group"
@@ -99,14 +116,14 @@ export const ContactPage = () => {
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h3 className="font-serif-title text-2xl font-bold text-white">
-                Message Sent
+                Message Received & Logged
               </h3>
               <p className="text-sm text-[#94a3b8] max-w-md mx-auto leading-relaxed">
-                Thank you for contacting G Alphaa. Your message has been received and logged.
+                Thank you for contacting G Alphaa. Your message has been logged in our artist CRM.
               </p>
               <button
                 onClick={() => setSubmitted(false)}
-                className="btn-secondary text-xs py-2 px-6 rounded-full mt-2"
+                className="btn-secondary text-xs py-2 px-6 rounded-full mt-2 cursor-pointer"
               >
                 Send Another Message
               </button>
@@ -168,7 +185,7 @@ export const ContactPage = () => {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="btn-primary w-full text-xs py-3.5"
+                  className="btn-primary w-full text-xs py-3.5 cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                   <span>Send Message</span>

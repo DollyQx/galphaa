@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { DataProvider } from './context/DataContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
@@ -8,12 +9,13 @@ import { UnreleasedPage } from './pages/UnreleasedPage';
 import { AboutPage } from './pages/AboutPage';
 import { CollaboratePage } from './pages/CollaboratePage';
 import { ContactPage } from './pages/ContactPage';
+import { AdminPage } from './pages/AdminPage';
 
 import { SongDetailModal } from './components/SongDetailModal';
 import { PoetryDetailModal } from './components/PoetryDetailModal';
 import { InquiryModal } from './components/InquiryModal';
 
-export function App() {
+export function AppContent() {
   const [activePage, setActivePage] = useState('home');
   const [selectedSong, setSelectedSong] = useState(null);
   const [selectedPoem, setSelectedPoem] = useState(null);
@@ -31,7 +33,8 @@ export function App() {
       unreleased: 'G ALPHA — Unreleased Catalogue',
       about: 'G ALPHA — About',
       collaborate: 'G ALPHA — Collaborate',
-      contact: 'G ALPHA — Contact'
+      contact: 'G ALPHA — Contact',
+      admin: 'G ALPHA — Admin Portal & CRM'
     };
 
     document.title = pageTitles[activePage] || 'G ALPHA — Musician, Lyricist, Composer & Shayar';
@@ -90,6 +93,10 @@ export function App() {
         {activePage === 'contact' && (
           <ContactPage />
         )}
+
+        {activePage === 'admin' && (
+          <AdminPage setActivePage={setActivePage} />
+        )}
       </main>
 
       {/* Modals */}
@@ -120,6 +127,14 @@ export function App() {
       <Footer setActivePage={setActivePage} />
     </div>
   );
-};
+}
+
+export function App() {
+  return (
+    <DataProvider>
+      <AppContent />
+    </DataProvider>
+  );
+}
 
 export default App;

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, Menu, X } from 'lucide-react';
+import { Lock, Menu, X, Shield } from 'lucide-react';
 import { YouTubeIcon } from './icons/YouTubeIcon';
-import { SOCIAL_LINKS } from '../data/musicData';
+import { useData } from '../context/DataContext';
 
 export const Navbar = ({ activePage, setActivePage }) => {
+  const { socialLinks } = useData();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -68,9 +69,10 @@ export const Navbar = ({ activePage, setActivePage }) => {
     { id: 'about', num: '05', label: 'ABOUT' },
     { id: 'collaborate', num: '06', label: 'COLLABORATE' },
     { id: 'contact', num: '07', label: 'CONTACT' },
+    { id: 'admin', num: '08', label: 'ADMIN CRM', isAdmin: true },
   ];
 
-  const youtubeUrl = SOCIAL_LINKS.youtube || 'https://www.youtube.com/@GAlphaaMusic/videos';
+  const youtubeUrl = (socialLinks && socialLinks.youtube) || 'https://www.youtube.com/@GAlphaaMusic/videos';
 
   return (
     <header 
@@ -121,8 +123,8 @@ export const Navbar = ({ activePage, setActivePage }) => {
           })}
         </nav>
 
-        {/* Right Desktop Navigation: About, Collaborate, Contact + YouTube Icon */}
-        <div className="hidden lg:flex items-center gap-8">
+        {/* Right Desktop Navigation: About, Collaborate, Contact + YouTube Icon + Admin Portal */}
+        <div className="hidden lg:flex items-center gap-6">
           <nav className="flex items-center gap-8" aria-label="Primary Navigation Right">
             {rightNavItems.map((item) => {
               const isActive = activePage === item.id;
@@ -143,17 +145,33 @@ export const Navbar = ({ activePage, setActivePage }) => {
             })}
           </nav>
 
-          {/* Subtle YouTube Link Icon */}
-          <a
-            href={youtubeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Official YouTube Channel"
-            title="Official YouTube Channel"
-            className="text-[#94a3b8] hover:text-[#dc2626] transition-colors duration-200 p-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f59e0b] rounded-sm"
-          >
-            <YouTubeIcon className="w-4 h-4" />
-          </a>
+          <div className="flex items-center gap-3 border-l border-white/10 pl-6">
+            {/* YouTube Link Icon */}
+            <a
+              href={youtubeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Official YouTube Channel"
+              title="Official YouTube Channel"
+              className="text-[#94a3b8] hover:text-[#dc2626] transition-colors duration-200 p-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f59e0b] rounded-sm"
+            >
+              <YouTubeIcon className="w-4 h-4" />
+            </a>
+
+            {/* Admin Portal Button */}
+            <button
+              onClick={() => handleNavClick('admin')}
+              className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
+                activePage === 'admin'
+                  ? 'bg-[#f59e0b]/20 text-[#f59e0b] border-[#f59e0b]'
+                  : 'text-[#94a3b8] hover:text-[#f59e0b] border-white/10 hover:border-[#f59e0b]/40 bg-white/5'
+              }`}
+              title="Admin Portal CRM"
+              aria-label="Admin Portal CRM"
+            >
+              <Shield className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
@@ -199,8 +217,8 @@ export const Navbar = ({ activePage, setActivePage }) => {
             </button>
           </div>
 
-          {/* Main Editorial Menu Items (01 HOME - 07 CONTACT) */}
-          <nav className="relative z-10 my-auto py-8 flex flex-col gap-4 sm:gap-6" aria-label="Mobile Menu Links">
+          {/* Main Editorial Menu Items (01 HOME - 08 ADMIN) */}
+          <nav className="relative z-10 my-auto py-6 flex flex-col gap-3 sm:gap-5" aria-label="Mobile Menu Links">
             {mobileNavItems.map((item) => {
               const isActive = activePage === item.id;
               return (
@@ -216,13 +234,16 @@ export const Navbar = ({ activePage, setActivePage }) => {
                   }`}>
                     {item.num}
                   </span>
-                  <span className={`font-serif-title text-2xl sm:text-4xl lg:text-5xl font-bold tracking-wider uppercase transition-colors duration-200 ${
+                  <span className={`font-serif-title text-xl sm:text-3xl lg:text-4xl font-bold tracking-wider uppercase transition-colors duration-200 ${
                     isActive ? 'text-[#f59e0b]' : 'group-hover:text-[#f59e0b]'
                   }`}>
                     {item.label}
                   </span>
                   {item.isUnreleased && (
                     <Lock className="w-4 h-4 text-[#f59e0b] ml-1" />
+                  )}
+                  {item.isAdmin && (
+                    <Shield className="w-4 h-4 text-[#f59e0b] ml-1" />
                   )}
                 </button>
               );
@@ -251,4 +272,3 @@ export const Navbar = ({ activePage, setActivePage }) => {
     </header>
   );
 };
-

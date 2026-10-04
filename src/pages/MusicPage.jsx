@@ -1,15 +1,16 @@
 import React, { useState, useMemo } from 'react';
-import { Music, Search, ArrowUpDown, Filter } from 'lucide-react';
+import { Music, Search, ArrowUpDown } from 'lucide-react';
 import { MusicCard } from '../components/MusicCard';
-import { RELEASED_TRACKS } from '../data/musicData';
+import { useData } from '../context/DataContext';
 
 export const MusicPage = ({ onOpenSongDetail }) => {
+  const { releasedTracks } = useData();
   const [filterCategory, setFilterCategory] = useState('ALL'); // 'ALL' | 'RELEASED' | 'FEATURED'
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('Featured'); // 'Featured' | 'A-Z' | 'Newest'
 
   const processedTracks = useMemo(() => {
-    let result = [...RELEASED_TRACKS];
+    let result = [...releasedTracks];
 
     // Category Filter
     if (filterCategory === 'RELEASED') {
@@ -39,7 +40,7 @@ export const MusicPage = ({ onOpenSongDetail }) => {
     }
 
     return result;
-  }, [filterCategory, searchTerm, sortBy]);
+  }, [releasedTracks, filterCategory, searchTerm, sortBy]);
 
   return (
     <div className="min-h-screen pt-28 pb-20 container-custom space-y-12">
@@ -74,7 +75,7 @@ export const MusicPage = ({ onOpenSongDetail }) => {
               <button
                 key={cat}
                 onClick={() => setFilterCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition-all ${
+                className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer ${
                   filterCategory === cat
                     ? 'bg-[#f59e0b] text-[#070709] shadow-lg shadow-[#f59e0b]/20 font-bold'
                     : 'bg-white/5 text-[#94a3b8] hover:text-white hover:bg-white/10'
@@ -130,7 +131,7 @@ export const MusicPage = ({ onOpenSongDetail }) => {
           <p className="text-base">No compositions found matching "{searchTerm}"</p>
           <button
             onClick={() => { setSearchTerm(''); setFilterCategory('ALL'); }}
-            className="text-xs text-[#f59e0b] underline font-medium"
+            className="text-xs text-[#f59e0b] underline font-medium cursor-pointer"
           >
             Clear Filters
           </button>

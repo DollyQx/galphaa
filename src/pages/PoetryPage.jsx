@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Feather, BookOpen } from 'lucide-react';
-import { POEMS, POETRY_SUBHEADING } from '../data/poetryData';
+import { Feather } from 'lucide-react';
+import { useData } from '../context/DataContext';
 import { PoetryDetailModal } from '../components/PoetryDetailModal';
 
 export const PoetryPage = () => {
+  const { poems, poetrySubheading } = useData();
   const [selectedPoem, setSelectedPoem] = useState(null);
 
   return (
@@ -21,7 +22,7 @@ export const PoetryPage = () => {
         </h1>
 
         <p className="font-handwriting text-2xl text-[#fcd34d]">
-          "{POETRY_SUBHEADING}"
+          "{poetrySubheading || "Words that don't need a melody."}"
         </p>
 
         <p className="text-base text-[#94a3b8] max-w-xl mx-auto font-light leading-relaxed">
@@ -31,7 +32,7 @@ export const PoetryPage = () => {
 
       {/* Poetry Literature Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {POEMS.map((poem) => (
+        {poems.map((poem) => (
           <div
             key={poem.id}
             onClick={() => setSelectedPoem(poem)}
@@ -50,7 +51,7 @@ export const PoetryPage = () => {
 
               <div className="p-4 rounded-xl bg-white/5 border border-white/5">
                 <p className="font-serif-editorial text-lg text-[#94a3b8] italic leading-relaxed whitespace-pre-line">
-                  "{poem.excerpt}"
+                  "{poem.excerpt || poem.fullPoem}"
                 </p>
               </div>
 

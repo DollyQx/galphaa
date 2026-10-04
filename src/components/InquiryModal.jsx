@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { X, Send, Lock, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { useData } from '../context/DataContext';
 
 export const InquiryModal = ({ initialSubject = '', initialSong = '', onClose }) => {
+  const { addInquiry } = useData();
+
   const [formData, setFormData] = useState({
     songTitle: initialSong || '',
     name: '',
@@ -26,6 +29,20 @@ export const InquiryModal = ({ initialSubject = '', initialSong = '', onClose })
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.consent) return;
+
+    // Persist to CRM LocalStorage data layer
+    addInquiry({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.company ? `Company: ${formData.company}` : '',
+      subject: initialSubject || `Inquiry: ${formData.inquiryType}`,
+      songTitle: formData.songTitle || null,
+      projectType: formData.inquiryType,
+      timeline: formData.role || 'Standard Timeline',
+      budget: 'Unspecified',
+      message: formData.message,
+    });
+
     setSubmitted(true);
   };
 
@@ -37,7 +54,7 @@ export const InquiryModal = ({ initialSubject = '', initialSong = '', onClose })
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/5 text-white/80 hover:text-white hover:bg-white/10 flex items-center justify-center border border-white/10 transition-colors"
+          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/5 text-white/80 hover:text-white hover:bg-white/10 flex items-center justify-center border border-white/10 transition-colors cursor-pointer"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
@@ -50,11 +67,11 @@ export const InquiryModal = ({ initialSubject = '', initialSong = '', onClose })
             </div>
             
             <h3 className="font-serif-title text-2xl font-bold text-white tracking-wide">
-              REQUEST RECEIVED
+              REQUEST RECEIVED & LOGGED
             </h3>
             
             <p className="text-xs sm:text-sm text-[#94a3b8] max-w-md mx-auto leading-relaxed">
-              Thank you. Your inquiry regarding {formData.songTitle ? <strong className="text-white">"{formData.songTitle}"</strong> : 'this composition'} has been received.
+              Thank you. Your inquiry regarding {formData.songTitle ? <strong className="text-white">"{formData.songTitle}"</strong> : 'this composition'} has been logged into the artist CRM.
             </p>
 
             <p className="text-[11px] text-[#64748b]">
@@ -63,7 +80,7 @@ export const InquiryModal = ({ initialSubject = '', initialSong = '', onClose })
 
             <button
               onClick={onClose}
-              className="btn-primary text-xs py-2.5 px-6 rounded-full mt-4"
+              className="btn-primary text-xs py-2.5 px-6 rounded-full mt-4 cursor-pointer"
             >
               Done
             </button>
@@ -188,7 +205,7 @@ export const InquiryModal = ({ initialSubject = '', initialSong = '', onClose })
                 <button
                   type="submit"
                   disabled={!formData.consent}
-                  className="btn-primary text-xs py-3 px-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-primary text-xs py-3 px-6 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                   <span>SEND REQUEST</span>

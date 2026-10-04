@@ -1,9 +1,12 @@
 import React from 'react';
-import { ArrowUp, Disc, ShieldCheck } from 'lucide-react';
+import { ArrowUp, Disc, ShieldCheck, Lock } from 'lucide-react';
 import { YoutubeIcon } from './SocialIcons';
-import { SOCIAL_LINKS } from '../data/musicData';
+import { useData } from '../context/DataContext';
 
 export const Footer = ({ setActivePage }) => {
+  const { socialLinks } = useData();
+  const youtubeUrl = (socialLinks && socialLinks.youtube) || 'https://www.youtube.com/@GAlphaaMusic/videos';
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -38,7 +41,7 @@ export const Footer = ({ setActivePage }) => {
             </p>
 
             <p className="text-xs text-[#64748b] max-w-md leading-relaxed font-light">
-              Official portfolio and digital catalogue for G ALPHA. All rights reserved for compositions, lyrics, audio recordings, and literary works.
+              Official portfolio and digital catalogue for G Alphaa. All rights reserved for compositions, lyrics, audio recordings, and literary works.
             </p>
           </div>
 
@@ -54,13 +57,17 @@ export const Footer = ({ setActivePage }) => {
                 { name: 'Unreleased', key: 'unreleased' },
                 { name: 'About', key: 'about' },
                 { name: 'Collaborate', key: 'collaborate' },
-                { name: 'Contact', key: 'contact' }
+                { name: 'Contact', key: 'contact' },
+                { name: 'Admin Portal CRM', key: 'admin', isAdmin: true }
               ].map((item) => (
                 <li key={item.key}>
                   <button
                     onClick={() => setActivePage(item.key)}
-                    className="hover:text-[#f59e0b] transition-colors"
+                    className={`hover:text-[#f59e0b] transition-colors flex items-center gap-1.5 ${
+                      item.isAdmin ? 'text-slate-400 hover:text-[#f59e0b]' : ''
+                    }`}
                   >
+                    {item.isAdmin && <Lock className="w-3 h-3 text-[#f59e0b]" />}
                     {item.name}
                   </button>
                 </li>
@@ -76,7 +83,7 @@ export const Footer = ({ setActivePage }) => {
             
             <div className="space-y-2">
               <a
-                href={SOCIAL_LINKS.youtube}
+                href={youtubeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white hover:border-[#dc2626] hover:text-[#ff4d4d] transition-all"
@@ -96,11 +103,11 @@ export const Footer = ({ setActivePage }) => {
 
         {/* Bottom Rights Bar */}
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#64748b]">
-          <p>© G ALPHA. All rights reserved.</p>
+          <p>© G Alphaa. All rights reserved.</p>
 
           <button
             onClick={scrollToTop}
-            className="flex items-center gap-2 hover:text-[#f59e0b] transition-colors"
+            className="flex items-center gap-2 hover:text-[#f59e0b] transition-colors cursor-pointer"
           >
             <span>Back to top</span>
             <ArrowUp className="w-4 h-4" />

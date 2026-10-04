@@ -6,15 +6,15 @@ import {
   Film, 
   Building2,
   Users,
-  Search,
-  Sparkles
+  Search
 } from 'lucide-react';
-import { UNRELEASED_TRACKS } from '../data/musicData';
+import { useData } from '../context/DataContext';
 
 export const UnreleasedPage = ({ onOpenInquiry }) => {
+  const { unreleasedTracks } = useData();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredUnreleased = UNRELEASED_TRACKS.filter(track =>
+  const filteredUnreleased = unreleasedTracks.filter(track =>
     track.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -25,7 +25,7 @@ export const UnreleasedPage = ({ onOpenInquiry }) => {
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#dc2626]/20 border border-[#dc2626]/40 text-xs font-semibold tracking-widest text-[#fca5a5] uppercase">
           <Lock className="w-3.5 h-3.5 text-[#dc2626]" />
-          <span>PRIVATE INDUSTRY VAULT ({UNRELEASED_TRACKS.length} WORKS)</span>
+          <span>PRIVATE INDUSTRY VAULT ({unreleasedTracks.length} WORKS)</span>
         </div>
 
         <h1 className="font-serif-title text-4xl sm:text-6xl font-bold text-white tracking-tight">
@@ -91,7 +91,7 @@ export const UnreleasedPage = ({ onOpenInquiry }) => {
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-[#0d0e14] rounded-2xl border border-white/10">
         <div>
           <h3 className="font-serif-title text-xl font-bold text-white">Private Catalogue</h3>
-          <p className="text-xs text-[#94a3b8]">28 original unreleased compositions</p>
+          <p className="text-xs text-[#94a3b8]">{unreleasedTracks.length} original unreleased compositions</p>
         </div>
 
         <div className="relative w-full sm:w-72">
@@ -106,7 +106,7 @@ export const UnreleasedPage = ({ onOpenInquiry }) => {
         </div>
       </div>
 
-      {/* Unreleased Grid (Requirement #6: Auto-numbering, 01 NAQAB TERA, Original composition) */}
+      {/* Unreleased Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredUnreleased.map((track, idx) => {
           const paddedNumber = String(idx + 1).padStart(2, '0');
@@ -144,7 +144,7 @@ export const UnreleasedPage = ({ onOpenInquiry }) => {
               <div className="pt-4 border-t border-white/5">
                 <button
                   onClick={() => onOpenInquiry(`PRIVATE PREVIEW REQUEST: ${track.title}`, track.title)}
-                  className="btn-secondary w-full text-xs py-2.5 px-3 justify-center gap-1.5 hover:border-[#dc2626]"
+                  className="btn-secondary w-full text-xs py-2.5 px-3 justify-center gap-1.5 hover:border-[#dc2626] cursor-pointer"
                 >
                   <Key className="w-3.5 h-3.5 text-[#dc2626]" />
                   <span>Request Private Preview</span>
