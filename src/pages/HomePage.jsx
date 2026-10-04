@@ -54,7 +54,7 @@ export const HomePage = ({ setActivePage, onOpenSongDetail, onOpenInquiry }) => 
 
             <div className="space-y-3">
               <h1 className="font-serif-title text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-none">
-                G ALPHA
+                G Alphaa
               </h1>
               
               <p className="text-xs sm:text-sm font-semibold tracking-[0.3em] text-[#f59e0b] uppercase">

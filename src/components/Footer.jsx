@@ -25,7 +25,7 @@ export const Footer = ({ setActivePage }) => {
               </div>
               <div>
                 <span className="font-serif-title text-2xl font-bold text-white tracking-widest block">
-                  G ALPHA
+                  G Alphaa
                 </span>
                 <span className="text-[10px] text-[#f59e0b] font-semibold tracking-wider uppercase">
                   MUSICIAN · LYRICIST · COMPOSER · SHAYAR

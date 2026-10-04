@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Music, 
-  Feather, 
-  Lock, 
-  User, 
-  Briefcase, 
-  Mail, 
-  Home, 
-  Menu, 
-  X,
-  Disc
-} from 'lucide-react';
-import { YoutubeIcon } from './SocialIcons';
+import { Lock, Menu, X } from 'lucide-react';
+import { YouTubeIcon } from './icons/YouTubeIcon';
 import { SOCIAL_LINKS } from '../data/musicData';
 
 export const Navbar = ({ activePage, setActivePage }) => {
@@ -30,15 +19,28 @@ export const Navbar = ({ activePage, setActivePage }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'music', label: 'Music', icon: Music },
-    { id: 'poetry', label: 'Poetry', icon: Feather },
-    { id: 'unreleased', label: 'Unreleased', icon: Lock, badge: '28' },
-    { id: 'about', label: 'About', icon: User },
-    { id: 'collaborate', label: 'Collaborate', icon: Briefcase },
-    { id: 'contact', label: 'Contact', icon: Mail },
-  ];
+  // Prevent background body scrolling when mobile overlay is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
+  // Support Escape key to close mobile menu
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
 
   const handleNavClick = (id) => {
     setActivePage(id);
@@ -46,147 +48,207 @@ export const Navbar = ({ activePage, setActivePage }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const centerNavItems = [
+    { id: 'music', label: 'Music' },
+    { id: 'poetry', label: 'Poetry' },
+    { id: 'unreleased', label: 'Unreleased', isUnreleased: true },
+  ];
+
+  const rightNavItems = [
+    { id: 'about', label: 'About' },
+    { id: 'collaborate', label: 'Collaborate' },
+    { id: 'contact', label: 'Contact' },
+  ];
+
+  const mobileNavItems = [
+    { id: 'home', num: '01', label: 'HOME' },
+    { id: 'music', num: '02', label: 'MUSIC' },
+    { id: 'poetry', num: '03', label: 'POETRY' },
+    { id: 'unreleased', num: '04', label: 'UNRELEASED', isUnreleased: true },
+    { id: 'about', num: '05', label: 'ABOUT' },
+    { id: 'collaborate', num: '06', label: 'COLLABORATE' },
+    { id: 'contact', num: '07', label: 'CONTACT' },
+  ];
+
+  const youtubeUrl = SOCIAL_LINKS.youtube || 'https://www.youtube.com/@GAlphaaMusic/videos';
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-[#070709]/90 backdrop-blur-md border-b border-white/10 py-3 shadow-2xl' 
-          : 'bg-gradient-to-b from-[#070709]/90 via-[#070709]/40 to-transparent py-5'
+          ? 'bg-[#0a0a0f]/95 backdrop-blur-md border-b border-white/10 py-3.5 shadow-2xl' 
+          : 'bg-gradient-to-b from-[#070709]/80 via-[#070709]/30 to-transparent border-b border-white/5 py-5'
       }`}
     >
       <div className="container-custom flex items-center justify-between">
         
-        {/* Logo / Brand */}
+        {/* Left: G Alphaa Wordmark (Returns to Home) */}
         <button 
           onClick={() => handleNavClick('home')} 
-          className="flex items-center gap-3 group text-left bg-transparent border-none cursor-pointer"
+          className="group text-left bg-transparent border-none cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f59e0b] rounded-sm py-1"
+          aria-label="G Alphaa - Home"
         >
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#f59e0b] to-[#b45309] flex items-center justify-center text-[#070709] font-bold shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform duration-300">
-            <Disc className="w-6 h-6 animate-spin-slow" />
-          </div>
-          <div>
-            <span className="font-serif-title text-2xl font-bold tracking-widest text-white group-hover:text-[#ff9e2c] transition-colors">
-              G ALPHA
-            </span>
-            <span className="block text-[10px] tracking-[0.25em] text-[#94a3b8] uppercase font-medium">
-              Official Artist
-            </span>
-          </div>
+          <span className="font-serif-title text-2xl font-bold tracking-tight text-white group-hover:text-[#f59e0b] transition-colors duration-200">
+            G Alphaa
+          </span>
         </button>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-1 bg-[#0d0e14]/80 p-1.5 rounded-full border border-white/10 shadow-inner">
-          {navItems.map((item) => {
-            const Icon = item.icon;
+        {/* Center Desktop Navigation: Music, Poetry, Unreleased */}
+        <nav className="hidden lg:flex items-center gap-8" aria-label="Primary Navigation Left">
+          {centerNavItems.map((item) => {
             const isActive = activePage === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 border-none cursor-pointer ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#d97706] to-[#f59e0b] text-[#070709] shadow-md shadow-amber-500/20'
-                    : 'text-[#94a3b8] hover:text-white hover:bg-white/5'
+                className={`relative flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 py-1 border-none bg-transparent cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f59e0b] rounded-sm ${
+                  item.isUnreleased
+                    ? isActive 
+                      ? 'text-[#f59e0b]' 
+                      : 'text-[#f59e0b]/80 hover:text-[#f59e0b]'
+                    : isActive 
+                      ? 'text-[#f59e0b]' 
+                      : 'text-[#94a3b8] hover:text-white'
                 }`}
               >
-                <Icon className="w-3.5 h-3.5" />
+                {item.isUnreleased && <Lock className="w-3 h-3 text-[#f59e0b]" />}
                 <span>{item.label}</span>
-                {item.badge && (
-                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                    isActive ? 'bg-[#070709] text-[#f59e0b]' : 'bg-[#dc2626]/20 text-[#fca5a5] border border-[#dc2626]/40'
-                  }`}>
-                    {item.badge}
-                  </span>
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#f59e0b] rounded-full" />
                 )}
               </button>
             );
           })}
         </nav>
 
-        {/* Social Icons & Primary CTA */}
-        <div className="hidden lg:flex items-center gap-4">
-          <div className="flex items-center gap-2 pr-3 border-r border-white/10">
-            {SOCIAL_LINKS.youtube && (
-              <a
-                href={SOCIAL_LINKS.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Official YouTube Channel"
-                className="w-9 h-9 rounded-full bg-white/5 hover:bg-[#dc2626]/20 hover:border-[#dc2626]/50 border border-white/10 flex items-center justify-center text-white/80 hover:text-[#ff4d4d] transition-all duration-300"
-              >
-                <YoutubeIcon className="w-4 h-4" />
-              </a>
-            )}
-          </div>
-
-          <button
-            onClick={() => handleNavClick('collaborate')}
-            className="btn-primary text-xs py-2 px-4 rounded-full"
-          >
-            Inquire / Licensing
-          </button>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 rounded-lg bg-white/5 border border-white/10 text-white hover:text-[#f59e0b]"
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
-
-      {/* Mobile Menu Drawer */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[70px] bg-[#070709]/98 border-b border-white/10 p-6 shadow-2xl backdrop-blur-xl animate-fade-in">
-          <div className="flex flex-col gap-2">
-            {navItems.map((item) => {
-              const Icon = item.icon;
+        {/* Right Desktop Navigation: About, Collaborate, Contact + YouTube Icon */}
+        <div className="hidden lg:flex items-center gap-8">
+          <nav className="flex items-center gap-8" aria-label="Primary Navigation Right">
+            {rightNavItems.map((item) => {
               const isActive = activePage === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center justify-between p-3 rounded-lg text-sm font-semibold tracking-wider border-none text-left cursor-pointer ${
-                    isActive
-                      ? 'bg-[#f59e0b] text-[#070709]'
-                      : 'text-[#94a3b8] hover:text-white hover:bg-white/5'
+                  className={`relative text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 py-1 border-none bg-transparent cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f59e0b] rounded-sm ${
+                    isActive ? 'text-[#f59e0b]' : 'text-[#94a3b8] hover:text-white'
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </div>
-                  {item.badge && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-[#dc2626]/30 text-white font-bold border border-[#dc2626]/50">
-                      {item.badge}
-                    </span>
+                  <span>{item.label}</span>
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#f59e0b] rounded-full" />
                   )}
                 </button>
               );
             })}
+          </nav>
 
-            <div className="pt-4 mt-2 border-t border-white/10 flex items-center justify-between">
-              <a
-                href={SOCIAL_LINKS.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs text-[#94a3b8] hover:text-white"
-              >
-                <YoutubeIcon className="w-4 h-4 text-[#dc2626]" />
-                <span>YouTube Channel</span>
-              </a>
-              <button
-                onClick={() => handleNavClick('collaborate')}
-                className="btn-primary text-xs py-2 px-4"
-              >
-                Inquire
-              </button>
-            </div>
+          {/* Subtle YouTube Link Icon */}
+          <a
+            href={youtubeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Official YouTube Channel"
+            title="Official YouTube Channel"
+            className="text-[#94a3b8] hover:text-[#dc2626] transition-colors duration-200 p-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f59e0b] rounded-sm"
+          >
+            <YouTubeIcon className="w-4 h-4" />
+          </a>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="lg:hidden p-2 text-white hover:text-[#f59e0b] bg-transparent border-none cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f59e0b] rounded-md"
+          aria-label="Open navigation"
+          aria-expanded={mobileMenuOpen}
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+
+      </div>
+
+      {/* Full-Screen Mobile Navigation Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-[#070709]/98 backdrop-blur-2xl flex flex-col justify-between p-6 sm:p-10 animate-fade-in overflow-y-auto"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile Navigation Menu"
+        >
+          {/* Subtle Background Glow */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#f59e0b]/5 rounded-full blur-[120px] pointer-events-none" />
+
+          {/* Top Bar: Wordmark + Close Button */}
+          <div className="relative z-10 flex items-center justify-between border-b border-white/10 pb-6">
+            <button 
+              onClick={() => handleNavClick('home')}
+              className="bg-transparent border-none cursor-pointer text-left focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f59e0b] rounded-sm"
+            >
+              <span className="font-serif-title text-2xl sm:text-3xl font-bold tracking-tight text-white">
+                G Alphaa
+              </span>
+            </button>
+
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 text-white hover:text-[#f59e0b] bg-transparent border-none cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f59e0b] rounded-full"
+              aria-label="Close navigation"
+            >
+              <X className="w-7 h-7" />
+            </button>
           </div>
+
+          {/* Main Editorial Menu Items (01 HOME - 07 CONTACT) */}
+          <nav className="relative z-10 my-auto py-8 flex flex-col gap-4 sm:gap-6" aria-label="Mobile Menu Links">
+            {mobileNavItems.map((item) => {
+              const isActive = activePage === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`flex items-center gap-4 sm:gap-6 text-left border-none bg-transparent cursor-pointer group py-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f59e0b] rounded-sm transition-colors duration-200 ${
+                    isActive ? 'text-[#f59e0b]' : 'text-white/80 hover:text-white'
+                  }`}
+                >
+                  <span className={`font-mono text-xs sm:text-sm tracking-widest font-semibold ${
+                    isActive ? 'text-[#f59e0b]' : 'text-[#64748b] group-hover:text-[#f59e0b]'
+                  }`}>
+                    {item.num}
+                  </span>
+                  <span className={`font-serif-title text-2xl sm:text-4xl lg:text-5xl font-bold tracking-wider uppercase transition-colors duration-200 ${
+                    isActive ? 'text-[#f59e0b]' : 'group-hover:text-[#f59e0b]'
+                  }`}>
+                    {item.label}
+                  </span>
+                  {item.isUnreleased && (
+                    <Lock className="w-4 h-4 text-[#f59e0b] ml-1" />
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Bottom Social & Artist Title */}
+          <div className="relative z-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <p className="text-[10px] sm:text-xs font-semibold tracking-[0.25em] text-[#f59e0b] uppercase">
+              MUSICIAN · LYRICIST · COMPOSER · SHAYAR
+            </p>
+
+            <a
+              href={youtubeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 text-xs text-[#94a3b8] hover:text-white transition-colors duration-200"
+            >
+              <YouTubeIcon className="w-4 h-4 text-[#dc2626]" />
+              <span>YouTube Channel</span>
+            </a>
+          </div>
+
         </div>
       )}
     </header>
   );
 };
+
